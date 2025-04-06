@@ -3,9 +3,13 @@ const fs = require("fs");
 const path = require("path");
 const { getUserPaths, ensureUserFolders } = require("../helpers/utils");
 
+// 🧠 Track users expecting to upload for /information
+const awaitingInformationUpload = new Set();
+
 const handleInformation = (msg, bot) => {
   const userId = msg.from.id;
   ensureUserFolders(userId);
+  awaitingInformationUpload.add(userId); // 🟢 Mark that this user is in upload mode
   bot.sendMessage(
     msg.chat.id,
     "📤 Please upload your PDF, DOC, or image files now."
@@ -15,6 +19,14 @@ const handleInformation = (msg, bot) => {
 const handleFileUpload = async (msg, bot) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
+
+  // 🔒 Only allow file saving if this user used /information
+  if (!awaitingInformationUpload.has(userId)) {
+    return; // silently ignore
+  }
+
+  awaitingInformationUpload.delete(userId); // ✅ Reset after upload
+
   const fileId = msg.document.file_id;
   const fileName = msg.document.file_name;
 
