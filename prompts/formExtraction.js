@@ -6,8 +6,7 @@ const extract = `Analyze the following text and extract **all form labels** incl
                - If a checklist or gaps is under a label, write label name - checklist or gap name.
                - Do not skip any labels. Keep as many labels as possible. 
 
-               Example Output (JSON format):
-               [
+               Example Output (Text format):
                  "Identity Document Checklist - Australian Driver’s Licence",
                  "Identity Document Checklist - Passport",
                  "Identity Document Checklist - UNHCR Document",
@@ -23,8 +22,7 @@ const extract = `Analyze the following text and extract **all form labels** incl
                  "Family Member 1 Place of Birth Country",
                  "Issuing Authority/ Place of Issue as Shown in Passport",
                  "Parent 2 - Relationship to you",
-                 "Parent 2 - Date of Birth"
-               ]
+                 "Parent 2 - Date of Birth",
                  
                Return only a **flat text list of labels**.`;
 

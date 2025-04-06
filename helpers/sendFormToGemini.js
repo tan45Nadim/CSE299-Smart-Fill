@@ -1,7 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 const { getMimeType } = require("./utilsForForm");
-const { extract } = require("../prompts/extraction");
+const { extract } = require("../prompts/formExtraction");
 
 async function sendFormToGemini(filePath, apiKey = process.env.GEMINI_API_KEY) {
   const fileBuffer = fs.readFileSync(filePath);
