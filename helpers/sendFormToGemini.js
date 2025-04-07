@@ -1,7 +1,6 @@
 const axios = require("axios");
 const fs = require("fs");
 const { getMimeType } = require("./utilsForForm");
-const { extract } = require("../prompts/formExtraction");
 
 async function sendFormToGemini(filePath, apiKey = process.env.GEMINI_API_KEY) {
   const fileBuffer = fs.readFileSync(filePath);
@@ -18,7 +17,7 @@ async function sendFormToGemini(filePath, apiKey = process.env.GEMINI_API_KEY) {
             },
           },
           {
-            text: ` ${extract} `,
+            text: `Extract the labels from this file.`,
           },
         ],
       },
@@ -33,7 +32,11 @@ async function sendFormToGemini(filePath, apiKey = process.env.GEMINI_API_KEY) {
 
   const resultText = response.data.candidates[0].content.parts[0].text;
 
-  return { result: resultText };
+  try {
+    return JSON.parse(resultText);
+  } catch {
+    return { result: resultText };
+  }
 }
 
-module.exports = sendFormToGemini;
+module.exports = { sendFormToGemini };

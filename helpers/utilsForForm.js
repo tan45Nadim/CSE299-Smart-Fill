@@ -23,21 +23,17 @@ function getMimeType(filePath) {
 function cleanFormFolders(userId) {
   const base = userId.toString();
   const formDownloadPath = path.join(__dirname, "..", "form-downloads", base);
-  const formInfoFile = path.join(
-    __dirname,
-    "..",
-    "form-info",
-    `${base}-form-labels.txt`
-  );
+  const formInfoFolder = path.join(__dirname, "..", "form-info", base); // User-specific folder in form-info
 
   // 🧹 Delete folder: form-downloads/<userId>
   if (fs.existsSync(formDownloadPath)) {
     fs.rmSync(formDownloadPath, { recursive: true, force: true });
   }
 
-  // 🧹 Delete file: form-info/<userId>-form-labels.txt
-  if (fs.existsSync(formInfoFile)) {
-    fs.unlinkSync(formInfoFile);
+  // 🧹 Delete user folder in form-info/<userId> (and all its contents)
+  if (fs.existsSync(formInfoFolder)) {
+    fs.rmSync(formInfoFolder, { recursive: true, force: true });
+    // console.log(`User-specific folder ${formInfoFolder} deleted.`);
   }
 }
 
